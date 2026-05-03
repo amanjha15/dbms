@@ -1,0 +1,291 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700&display=swap');
+
+:root {
+  --bg-color: #fffaf0; /* Light cream */
+  --grid-color: rgba(0, 0, 0, 0.05);
+  --text-primary: #111111;
+  --text-secondary: #4b5563;
+  --accent-color: #ff3366; /* Vibrant pink */
+  --accent-gradient: linear-gradient(90deg, #ff3366, #ff7733);
+  --success-color: #00cc66;
+  --warning-color: #ffcc00;
+  
+  --border-radius: 16px;
+  --border-thick: 3px solid #111;
+  --shadow-offset: 4px 4px 0px #111;
+  --shadow-hover: 6px 6px 0px #111;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  /* CSS Grid Paper Background */
+  background-image: 
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 30px 30px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Background Gradients to match the image */
+.bg-gradient-pink {
+  position: fixed;
+  bottom: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 51, 102, 0.15) 0%, rgba(255, 250, 240, 0) 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.bg-gradient-orange {
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 119, 51, 0.1) 0%, rgba(255, 250, 240, 0) 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Typography */
+.title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.gradient-text {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.underline-accent {
+  position: relative;
+  display: inline-block;
+}
+
+.underline-accent::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background-color: var(--warning-color);
+  z-index: -1;
+}
+
+/* Neo-Brutalist Cards */
+.brutal-card {
+  background: white;
+  border: var(--border-thick);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-offset);
+  transition: all 0.2s ease;
+}
+
+.brutal-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Navbar */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  background: transparent;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-family: 'Space Grotesk', sans-serif;
+  text-decoration: none;
+  border-radius: 9999px; /* Pill shape */
+  border: var(--border-thick);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 2px 2px 0px #111;
+  background: white;
+  color: var(--text-primary);
+}
+
+.btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px #111;
+}
+
+.btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #111;
+}
+
+.btn-primary {
+  background: var(--text-primary);
+  color: white;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+  border: var(--border-thick);
+  border-radius: var(--border-radius);
+  background: white;
+  box-shadow: var(--shadow-offset);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-weight: 700;
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border-bottom: var(--border-thick);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+th:hover {
+  background-color: #f3f4f6;
+}
+
+td {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Forms and Inputs */
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #111;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  background: white;
+  color: var(--text-primary);
+  transition: all 0.2s;
+  box-shadow: 2px 2px 0px #111;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 4px 4px 0px var(--accent-color);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Pills / Badges */
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 2px solid #111;
+  background: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.badge.applied::before { background: #3b82f6; }
+.badge.shortlisted::before { background: #f59e0b; }
+.badge.selected::before { background: #10b981; }
+.badge.rejected::before { background: #ef4444; }
+
+/* Utility */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

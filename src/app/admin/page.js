@@ -312,6 +312,53 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Student Directory */}
+      <div className="grid" style={{ marginTop: '2rem' }}>
+        <div className="brutal-card" style={{ padding: 0, overflow: 'hidden' }}>
+          <div style={{ padding: '2rem 2rem 1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2 className="title" style={{ fontSize: '1.5rem', margin: 0 }}>Student Directory</h2>
+          </div>
+          <div className="table-container" style={{ border: 'none', boxShadow: 'none', borderRadius: 0, maxHeight: '400px', overflowY: 'auto' }}>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student Name</th>
+                  <th>Branch</th>
+                  <th>CGPA</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {students.filter(s => !studentSearch || s.name.toLowerCase().includes(studentSearch.toLowerCase())).length > 0 ? students.filter(s => !studentSearch || s.name.toLowerCase().includes(studentSearch.toLowerCase())).map((student) => (
+                  <tr key={student.student_id}>
+                    <td style={{ color: '#4b5563' }}>#{student.student_id}</td>
+                    <td style={{ fontWeight: 700 }}>{student.name}</td>
+                    <td>{student.branch}</td>
+                    <td style={{ fontWeight: 700 }}>{student.cgpa}</td>
+                    <td>
+                      <span className="badge" style={{ 
+                        background: student.placement_status === 'PLACED' ? '#d1fae5' : '#fee2e2',
+                        color: student.placement_status === 'PLACED' ? '#065f46' : '#991b1b',
+                        borderColor: student.placement_status === 'PLACED' ? '#34d399' : '#f87171'
+                      }}>
+                        {student.placement_status}
+                      </span>
+                    </td>
+                  </tr>
+                )) : (
+                  <tr>
+                    <td colSpan="5" style={{ textAlign: 'center', color: '#4b5563', padding: '2rem' }}>
+                      No students found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -5,6 +5,7 @@ export async function GET() {
   try {
     const [studentCount] = await pool.query('SELECT COUNT(*) as total FROM students');
     const [companyCount] = await pool.query('SELECT COUNT(*) as total FROM companies');
+    const [jobCount] = await pool.query('SELECT COUNT(*) as total FROM jobs');
     const [placedCount] = await pool.query("SELECT COUNT(*) as total FROM students WHERE placement_status = 'PLACED'");
     
     // Using IFNULL to handle case where there are no results yet
@@ -29,6 +30,7 @@ export async function GET() {
     return NextResponse.json({
       totalStudents,
       totalCompanies: companyCount[0].total,
+      totalJobs: jobCount[0].total,
       placedStudents: placed,
       placementRate: `${placementRate}%`,
       avgSalary: `₹${Math.round(Number(salaryStats[0].avgSalary)).toLocaleString('en-IN')}`,

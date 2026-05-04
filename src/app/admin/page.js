@@ -10,14 +10,18 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState({
     totalStudents: 0,
     totalCompanies: 0,
+    totalJobs: 0,
     placementRate: '0%',
     avgSalary: '₹0',
     medianSalary: '₹0'
   });
   const [studentForm, setStudentForm] = useState({ name: '', branch: '', cgpa: '', email: '' });
+  const [companyForm, setCompanyForm] = useState({ company_name: '' });
   const [placementForm, setPlacementForm] = useState({ student_id: '', job_id: '', salary: '' });
+  const [jobForm, setJobForm] = useState({ company_id: '', role: '', package: '', deadline: '' });
   const [students, setStudents] = useState([]);
   const [jobs, setJobs] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [studentSearch, setStudentSearch] = useState('');
   
   useEffect(() => {
@@ -26,6 +30,7 @@ export default function AdminDashboard() {
       fetchStats();
       fetchStudents();
       fetchJobs();
+      fetchCompanies();
     }
   }, [isAuthenticated]);
 
@@ -78,6 +83,16 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchCompanies = async () => {
+    try {
+      const res = await fetch('/api/companies');
+      const data = await res.json();
+      if (Array.isArray(data)) setCompanies(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleStudentSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -91,11 +106,56 @@ export default function AdminDashboard() {
         alert('Student added successfully!');
         setStudentForm({ name: '', branch: '', cgpa: '', email: '' });
         fetchStats(); // Refresh stats
+        fetchStudents();
       } else {
         alert(`Error: ${data.error}`);
       }
     } catch (err) {
       alert('Failed to add student');
+    }
+  };
+
+  const handleCompanySubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/api/companies', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(companyForm)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Company added successfully!');
+        setCompanyForm({ company_name: '' });
+        fetchCompanies();
+        fetchStats();
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (err) {
+      alert('Failed to add company');
+    }
+  };
+
+  const handleJobSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/api/jobs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(jobForm)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Job added successfully!');
+        setJobForm({ company_id: '', role: '', package: '', deadline: '' });
+        fetchJobs();
+        fetchStats();
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (err) {
+      alert('Failed to add job');
     }
   };
 
@@ -167,16 +227,20 @@ export default function AdminDashboard() {
           <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: '#4b5563' }}>Partner Companies</div>
         </div>
         <div className="brutal-card">
+          <div className="title" style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#ec4899' }}>{stats.totalJobs}</div>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: '#4b5563' }}>Total Jobs</div>
+        </div>
+        <div className="brutal-card">
           <div className="title" style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#10b981' }}>{stats.placementRate}</div>
           <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: '#4b5563' }}>Placement Rate</div>
         </div>
         <div className="brutal-card">
-          <div className="title" style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#f59e0b' }}>{stats.avgSalary}</div>
+          <div className="title" style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#f59e0b' }}>{stats.avgSalary}</div>
           <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: '#4b5563' }}>Average Salary</div>
         </div>
       </div>
 
-      <div className="grid" style={{ gridTemplateColumns: '1fr 2fr' }}>
+      <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
         <div className="brutal-card">
           <h2 className="title" style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Add Student</h2>
           <form onSubmit={handleStudentSubmit}>
@@ -224,6 +288,74 @@ export default function AdminDashboard() {
               />
             </div>
             <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }}>Add Student</button>
+          </form>
+        </div>
+
+        <div className="brutal-card">
+          <h2 className="title" style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Add Company</h2>
+          <form onSubmit={handleCompanySubmit}>
+            <div className="form-group">
+              <label>Company Name</label>
+              <input 
+                type="text" 
+                className="form-input" 
+                required
+                value={companyForm.company_name}
+                onChange={e => setCompanyForm({...companyForm, company_name: e.target.value})}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }}>Add Company</button>
+          </form>
+        </div>
+
+        <div className="brutal-card">
+          <h2 className="title" style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Add Job</h2>
+          <form onSubmit={handleJobSubmit}>
+            <div className="form-group">
+              <label>Company</label>
+              <select 
+                className="form-input" 
+                required
+                value={jobForm.company_id}
+                onChange={e => setJobForm({...jobForm, company_id: e.target.value})}
+              >
+                <option value="">Select Company</option>
+                {companies.map(c => <option key={c.company_id} value={c.company_id}>{c.company_name}</option>)}
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Role</label>
+              <input 
+                type="text" 
+                className="form-input" 
+                required
+                value={jobForm.role}
+                onChange={e => setJobForm({...jobForm, role: e.target.value})}
+              />
+            </div>
+            <div className="form-group">
+              <label>Package (LPA or CTC)</label>
+              <input 
+                type="number" 
+                step="0.01"
+                min="0"
+                className="form-input" 
+                required
+                value={jobForm.package}
+                onChange={e => setJobForm({...jobForm, package: e.target.value})}
+              />
+            </div>
+            <div className="form-group">
+              <label>Deadline</label>
+              <input 
+                type="date" 
+                className="form-input" 
+                required
+                value={jobForm.deadline}
+                onChange={e => setJobForm({...jobForm, deadline: e.target.value})}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }}>Add Job</button>
           </form>
         </div>
 
@@ -327,6 +459,7 @@ export default function AdminDashboard() {
                   <th>Student Name</th>
                   <th>Branch</th>
                   <th>CGPA</th>
+                  <th>Applications</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -337,6 +470,7 @@ export default function AdminDashboard() {
                     <td style={{ fontWeight: 700 }}>{student.name}</td>
                     <td>{student.branch}</td>
                     <td style={{ fontWeight: 700 }}>{student.cgpa}</td>
+                    <td style={{ fontWeight: 700, color: '#3b82f6' }}>{student.application_count}</td>
                     <td>
                       <span className="badge" style={{ 
                         background: student.placement_status === 'PLACED' ? '#d1fae5' : '#fee2e2',

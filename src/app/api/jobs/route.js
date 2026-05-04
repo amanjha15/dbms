@@ -24,7 +24,7 @@ export async function POST(request) {
         const { company_id, role, package: j_package, deadline } = body;
         
         await pool.query(
-            'INSERT INTO jobs (company_id, role, package, deadline) VALUES (?, ?, ?, ?)',
+            'CALL add_job(?, ?, ?, ?)',
             [company_id, role, j_package, deadline]
         );
         return NextResponse.json({ message: 'Job created successfully' }, { status: 201 });

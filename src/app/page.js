@@ -6,6 +6,7 @@ export default function Home() {
   const [jobs, setJobs] = useState([]);
   const [stats, setStats] = useState({
     totalCompanies: 0,
+    totalJobs: 0,
     placementRate: '0%',
     avgSalary: '₹0',
     medianSalary: '₹0',
@@ -124,7 +125,7 @@ export default function Home() {
             <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: '#4b5563', paddingBottom: '8px' }}>Total</div>
           </div>
         </div>
-        
+
         <div className="brutal-card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div style={{ color: '#10b981' }}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
